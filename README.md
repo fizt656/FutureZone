@@ -127,10 +127,6 @@ If you'd like to contribute:
 
 Please ensure your code follows the project's coding style and includes appropriate documentation.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
 ## Disclaimer
 
 This bot is a prototype and is not intended for production use in its current state. It may contain bugs, incomplete features, or security vulnerabilities.
