@@ -27,7 +27,7 @@ This bot is currently in a prototype stage. It serves as a demonstration of the 
 - `conversation_manager.py`: Manages conversation state and history
 - `tts_manager.py`: Manages text-to-speech functionality with character-specific settings
 - `characters.py`: Defines character information, system prompts, and voice settings
-- `config.py`: Configuration file (not included in repository for security reasons)
+- `config.py`: Configuration file (generated for you during one-click installation, otherwise, use the template to set yours up)
 
 ## Installation
 
@@ -37,19 +37,27 @@ There are two ways to install and configure FutureZone: one-click installation a
 
 The one-click installation method provides a quick and easy way to set up FutureZone. However, it may not give you as much insight into the setup process as the manual method (in case you want to build later, especially in different environments).
 
-1. Download the appropriate installer for your operating system:
-   - For Windows: `install.bat`
-   - For Mac/Linux: `install.sh`
+1. Clone the repository:
+   ```
+   git clone https://github.com/fizt656/FutureZone.git
+   cd FutureZone
+   ```
 
-2. Run the installer:
-   - On Windows: Double-click the `install.bat` file
-   - On Mac/Linux: Open a terminal, navigate to the directory containing `install.sh`, and run:
+2. Run the appropriate installer for your operating system:
+   - On Windows: Double-click the `install.bat` file or run it from the command prompt
+   - On Mac/Linux: Open a terminal and run:
      ```
      chmod +x install.sh
      ./install.sh
      ```
 
 3. Follow the prompts to enter your API keys and other configuration details.
+
+4. After the installation is complete, you can run the bot using:
+   ```
+   python main.py [character_name]
+   ```
+   If no character name is provided, the bot will default to "Eli".
 
 ### Manual Installation
 
@@ -76,10 +84,9 @@ With manual installation, you'll have more control over the setup process and po
    - Copy `config_template.py` to `config.py`
    - Open `config.py` and replace the placeholder values with your actual API keys and tokens:
      - Anthropic API key
-     - OpenRouter API key
-     - ElevenLabs API key
-     - Discord bot token
-     - Discord user ID
+     - OpenRouter API key and HTTP Referer
+     - ElevenLabs API key and Voice ID
+     - Discord bot token and user ID
 
 5. Run the bot:
    ```
@@ -101,7 +108,6 @@ The FutureZone bot is designed to engage with students in an informal, friendly 
    - EXPLORE: Deeper exploration of chosen zones and iteration on methods and tools
    - CREATE: Development of a business idea based on experiences in DISCOVER and EXPLORE
 5. The bot can also discuss other TPZ opportunities like STEAM Deep Dives, Open Studio, and College and Career Pathways Bootcamps.
-It will be up to US to work together and train this with some materials/prompt as a team, looking forward to your partnership on that!
 
 ### Commands
 
@@ -113,18 +119,18 @@ It will be up to US to work together and train this with some materials/prompt a
 
 ### Text-to-Speech (TTS) Feature
 
-The TTS feature is now enabled by default, providing a more immersive and accessible experience. It uses character-specific voice settings defined in `characters.py`. The bot's responses are automatically converted to speech using the ElevenLabs API.
+The TTS feature is enabled by default, providing a more immersive and accessible experience. It uses character-specific voice settings defined in `characters.py`. The bot's responses are automatically converted to speech using the ElevenLabs API.
 
 ## Insight Packages (NOT live yet, in development)
 
-While interacting with students, the bot generates insight packages for various stakeholders:
+While interacting with students, the bot will [eventually be able to -- growth mindset, right?] generates insight packages for various stakeholders:
 
 1. TPZ Educators: Receive summaries of student interactions, progress, and potential areas for support.
 2. R&E (Research and Evaluation): Gain data on student engagement, common themes, and program effectiveness.
 3. Student Support: Receive alerts on students who may need additional assistance or resources.
 4. Communications: Gather stories and highlights that can be used for program promotion and reporting (future feature).
 
-Note: In this prototype stage, the insight package generation is simulated and not fully implemented.
+Note: In this prototype stage, the insight package generation is  NOT  implemented... YET.
 
 ## Future Plans
 
