@@ -4,20 +4,21 @@
 
 **IMPORTANT: This is a functional prototype to demonstrate utility. It is not a finished product... YET.**
 
-This project prototypes a Discord bot that supports TPZ (The Possible Zone) Advisors, helping students navigate their entrepreneurial journey. The bot supports multiple characters, text-to-speech functionality, and integration with different language models.
+This project prototypes a Discord bot that supports TPZ (The Possible Zone) Advisors, helping students navigate their entrepreneurial journey. The bot provides engaging, friction-free reflection opportunities and prompts to students, while also generating insight packages for TPZ educators and other stakeholders.
 
-Repository URL: https://github.com/fizt656/FutureZone.git
 
 ## Prototype Status
 
 This bot is currently in a prototype stage. It serves as a demonstration of the concept and functionality, but is not yet optimized for production use. Features may be incomplete or subject to change as the project evolves.
 
-## Features
+## Purpose and Features
 
+- Facilitate ongoing reflection and guidance for students throughout their TPZ journey
+- Generate insight packages for TPZ educators, R&E, Student Support, and Communications (prototype stage)
 - Conversation management with TPZ Advisors
-- Text-to-speech functionality using ElevenLabs (prototype integration)
+- Text-to-speech functionality using ElevenLabs (now enabled by default)
 - Support for multiple AI models (Claude, OpenRouter)
-- Character selection when launching the bot
+- Character selection when launching the bot, with character-specific voice settings
 - Basic command system for interaction within Discord
 
 ## Main Components
@@ -25,8 +26,8 @@ This bot is currently in a prototype stage. It serves as a demonstration of the 
 - `main.py`: Entry point of the application, contains Discord event handlers and commands
 - `api_manager.py`: Manages API calls to different AI models
 - `conversation_manager.py`: Manages conversation state and history
-- `tts_manager.py`: Manages text-to-speech functionality
-- `characters.py`: Defines character information and system prompts
+- `tts_manager.py`: Manages text-to-speech functionality with character-specific settings
+- `characters.py`: Defines character information, system prompts, and voice settings
 - `config.py`: Configuration file (not included in repository for security reasons)
 
 ## Setup
@@ -65,13 +66,52 @@ This bot is currently in a prototype stage. It serves as a demonstration of the 
 
 ## Usage
 
+The FutureZone bot is designed to engage with students in an informal, friendly manner. It uses emojis and casual language to create a comfortable environment for students to reflect on their entrepreneurial journey at The Possible Zone (TPZ).
+
+### How It Works
+
+1. When the bot is started, it automatically initiates the conversation by sending a greeting message to the student.
+2. The bot introduces itself as the selected character (default is Elijah McCoy/Eli) and starts with a general check-in, asking how things are going in the student's life before transitioning to their progress at TPZ.
+3. Students can engage in ongoing conversations with the bot, asking questions or reflecting on their work at TPZ.
+4. The bot provides guidance and prompts related to the different phases of the TPZ program:
+   - DISCOVER: Introduction to TPZ facilities and initial projects
+   - EXPLORE: Deeper exploration of chosen zones and iteration on methods and tools
+   - CREATE: Development of a business idea based on experiences in DISCOVER and EXPLORE
+5. The bot can also discuss other TPZ opportunities like STEAM Deep Dives, Open Studio, and College and Career Pathways Bootcamps.
+It will be up to US to work together and train this with some materials/prompt as a team, looking forward to your partnership on that!
+
+### Commands
+
 - `!delete`: Delete the last message in the conversation
 - `!clear`: Clear the conversation history
-- `!tts`: Toggle text-to-speech mode
-- `!say [message]`: Generate TTS for the specified message
+- `!tts`: Toggle text-to-speech mode on or off (TTS is enabled by default)
+- `!say [text]`: Generate TTS for the specified text
 - `!quit`: Shut down the bot
 
-Note: As this is a prototype, command functionality may be limited or subject to change.
+### Text-to-Speech (TTS) Feature
+
+The TTS feature is now enabled by default, providing a more immersive and accessible experience. It uses character-specific voice settings defined in `characters.py`. The bot's responses are automatically converted to speech using the ElevenLabs API.
+
+## Insight Packages (NOT live yet, in development)
+
+While interacting with students, the bot generates insight packages for various stakeholders:
+
+1. TPZ Educators: Receive summaries of student interactions, progress, and potential areas for support.
+2. R&E (Research and Evaluation): Gain data on student engagement, common themes, and program effectiveness.
+3. Student Support: Receive alerts on students who may need additional assistance or resources.
+4. Communications: Gather stories and highlights that can be used for program promotion and reporting (future feature).
+
+Note: In this prototype stage, the insight package generation is simulated and not fully implemented.
+
+## Future Plans
+
+As this project evolves beyond the prototype stage, we aim to implement:
+
+1. Advanced context-based flagging system to alert relevant stakeholders (e.g., student support, educators) based on conversational cues, not just keywords.
+2. Integration with TPZ's existing systems for seamless data flow and insights sharing.
+3. Expanded character roster to provide diverse perspectives and expertise.
+4. Enhanced natural language processing for more nuanced understanding of student needs and progress.
+5. Further improvements to multimodal interaction capabilities, building on the current TTS implementation.
 
 ## Contributing
 

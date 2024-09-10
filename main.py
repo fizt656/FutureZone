@@ -10,14 +10,14 @@ from api_manager import APIManager
 from tts_manager import TTSManager
 from characters import characters
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-api_manager = APIManager()
+api_manager = None
 conversation_manager = None
 tts_manager = None
 
@@ -28,20 +28,23 @@ args = parser.parse_args()
 
 @bot.event
 async def on_ready():
-    print(f'Bot is ready. Logged in as {bot.user.name}')
+    logger.info(f'Bot is ready. Logged in as {bot.user.name}')
     user = await bot.fetch_user(DISCORD_USER_ID)
     
-    global conversation_manager, tts_manager, api_manager
+    global conversation_manager, api_manager, tts_manager
     character_name = args.character
     if character_name not in characters:
-        print(f"Character '{character_name}' not found. Using default character 'Eli'.")
+        logger.warning(f"Character '{character_name}' not found. Using default character 'Eli'.")
         character_name = 'Eli'
     
-    api_manager.set_character(character_name)
+    logger.info(f"Initializing bot with character: {character_name}")
     conversation_manager = ConversationManager(character_name)
-    voice_id = characters[character_name]["tts_url"].split('/')[-1]
-    voice_settings = characters[character_name]["voice_settings"]
-    tts_manager = TTSManager(voice_id, voice_settings)
+    api_manager = APIManager()
+    tts_manager = TTSManager()
+    
+    # Set the voice settings for the selected character
+    character = characters[character_name]
+    tts_manager.set_voice_settings(character)
 
     await user.send(f"{character_name}, the TPZ Advisor, is ready to help!")
 
@@ -65,7 +68,7 @@ async def on_message(message):
 
     try:
         # Handle conversation and generate response
-        response_text = await api_manager.generate_response(message.content, conversation_manager.get_conversation())
+        response_text = await api_manager.generate_response(message.content, conversation_manager)
         
         if response_text:
             conversation_manager.add_user_message(message.content)
@@ -78,12 +81,13 @@ async def on_message(message):
 
             # Generate and send TTS if enabled
             if tts_manager.tts_enabled:
+                logger.info("Generating TTS for response")
                 await tts_manager.send_tts(message.channel, response_text)
         else:
             await message.channel.send("I apologize, but I couldn't generate a response at this time.")
     
     except Exception as e:
-        logger.error(f"Error in on_message: {str(e)}", exc_info=True)
+        logger.error(f"Error in on_message: {str(e)}")
         await message.channel.send("I encountered an unexpected error. Please try again later.")
 
 @bot.command()
@@ -101,32 +105,18 @@ async def clear(ctx):
 
 @bot.command()
 async def tts(ctx):
-    tts_manager.toggle_tts()
-    if tts_manager.tts_enabled:
+    is_enabled = tts_manager.toggle_tts()
+    if is_enabled:
         await ctx.send("TTS functionality is now enabled.")
     else:
         await ctx.send("TTS functionality is now disabled.")
 
 @bot.command()
-async def say(ctx, *, text=None):
-    logger.debug(f"Say command invoked with text: {text}")
-    logger.debug(f"TTS enabled: {tts_manager.tts_enabled}")
-    
+async def say(ctx, *, text):
     if tts_manager.tts_enabled:
-        if text is None:
-            last_message = conversation_manager.get_last_message()
-            logger.debug(f"Last message: {last_message}")
-            if last_message:
-                logger.debug("Attempting to send TTS with last message")
-                await tts_manager.send_tts(ctx.channel, last_message)
-            else:
-                logger.debug("No last message found")
-                await ctx.send("There are no messages in the conversation to say.")
-        else:
-            logger.debug("Attempting to send TTS with provided text")
-            await tts_manager.send_tts(ctx.channel, text)
+        logger.info("Generating TTS for 'say' command")
+        await tts_manager.send_tts(ctx.channel, text)
     else:
-        logger.debug("TTS is disabled")
         await ctx.send("TTS is currently disabled. Use !tts to enable it.")
 
 @bot.command()
@@ -135,4 +125,5 @@ async def quit(ctx):
     await bot.close()
 
 if __name__ == "__main__":
+    logger.info("Starting the bot...")
     bot.run(DISCORD_BOT_TOKEN)

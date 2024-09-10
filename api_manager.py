@@ -2,73 +2,65 @@
 import aiohttp
 import json
 from config import OPENROUTER_URL, ANTHROPIC_URL, OPENROUTER_HEADERS, ANTHROPIC_HEADERS, OPENROUTER_MODELS, CLAUDE_MODELS, DEFAULT_CLAUDE_MODEL, ANTHROPIC_MAX_TOKENS
-from characters import characters
 
 class APIManager:
     def __init__(self):
         self.current_llm = "anthropic"
         self.current_claude_model = DEFAULT_CLAUDE_MODEL
         self.current_openrouter_model = list(OPENROUTER_MODELS.keys())[0]
-        self.current_character = "Eli"  # Default character
 
-    def set_character(self, character_name):
-        if character_name in characters:
-            self.current_character = character_name
-            return True
-        return False
-
-    async def generate_response(self, message, conversation):
+    async def generate_response(self, message, conversation_manager):
         if self.current_llm == "anthropic":
-            response_text = await self.generate_anthropic_response(message, conversation)
+            response_text = await self.generate_anthropic_response(message, conversation_manager)
         elif self.current_llm == "openrouter":
-            response_text = await self.generate_openrouter_response(message, conversation)
+            response_text = await self.generate_openrouter_response(message, conversation_manager)
         else:
             response_text = "Invalid LLM selected."
         return response_text
 
-    async def generate_anthropic_response(self, message, conversation):
-        system_prompt = characters[self.current_character]["system_prompt"]
+    async def generate_anthropic_response(self, message, conversation_manager):
+        # Remove any system messages from the conversation
+        filtered_conversation = [msg for msg in conversation_manager.get_conversation() if msg['role'] != 'system']
         
-        messages = []
-        for msg in conversation:
-            if msg["role"] != "system":
-                messages.append({"role": msg["role"], "content": msg["content"]})
-        
-        messages.append({"role": "user", "content": message})
-
         data = {
             "model": self.current_claude_model,
-            "messages": messages,
-            "system": system_prompt,
+            "system": conversation_manager.system_prompt,
+            "messages": filtered_conversation + [{"role": "user", "content": message}],
             "max_tokens": ANTHROPIC_MAX_TOKENS,
             "temperature": 0.7
         }
 
+        print(f"Sending request to Anthropic API with data: {json.dumps(data, indent=2)}")
+        print(f"Headers: {json.dumps(ANTHROPIC_HEADERS, indent=2)}")
+
         async with aiohttp.ClientSession() as session:
             async with session.post(ANTHROPIC_URL, json=data, headers=ANTHROPIC_HEADERS) as response:
                 try:
-                    response_json = await response.json()
+                    response_text = await response.text()
+                    print(f"Raw response from Anthropic API: {response_text}")
+                    
+                    response_json = json.loads(response_text)
                     if response.status == 200:
                         if 'content' in response_json:
-                            return response_json['content'][0]['text']
+                            content = response_json['content']
+                            response_text = ""
+                            for item in content:
+                                if item['type'] == 'text':
+                                    response_text += item['text']
+                            return response_text.strip()
                         else:
-                            print("Error: 'content' key not found in the Anthropic API response.")
-                            print(f"Full response: {json.dumps(response_json, indent=2)}")
+                            print(f"Error: 'content' key not found in the Anthropic API response. Full response: {response_json}")
                     else:
                         print(f"Error: Anthropic API returned status code {response.status}")
-                        print(f"Response headers: {response.headers}")
-                        print(f"Response body: {await response.text()}")
+                        print(f"Error details: {response_json}")
                 except Exception as e:
                     print(f"Error: {str(e)}")
-                    print(f"Response status: {response.status}")
-                    print(f"Response headers: {response.headers}")
-                    print(f"Response body: {await response.text()}")
+                    print(f"Raw response: {response_text}")
                 
                 return "I apologize, but I encountered an error while processing your request."
 
-    async def generate_openrouter_response(self, message, conversation):
-        system_prompt = characters[self.current_character]["system_prompt"]
-        full_conversation = [{"role": "system", "content": system_prompt}] + conversation + [{"role": "user", "content": message}]
+    async def generate_openrouter_response(self, message, conversation_manager):
+        full_conversation = [{"role": "system", "content": conversation_manager.system_prompt}] + conversation_manager.get_conversation() + [{"role": "user", "content": message}]
 
         async with aiohttp.ClientSession() as session:
             async with session.post(OPENROUTER_URL, json={

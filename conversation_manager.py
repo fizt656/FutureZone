@@ -88,6 +88,10 @@ class ConversationManager:
                 return True
         return False
 
+    def clear_conversation(self):
+        self.conversation = []
+        self.save_message_to_log("System", "Conversation cleared")
+
     def save_conversation(self):
         if self.log_file:
             with open(self.log_file, 'w', encoding='utf-8') as file:
