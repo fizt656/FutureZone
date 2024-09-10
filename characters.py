@@ -1,4 +1,3 @@
-# characters_safe.py
 
 characters = {
 "Eli": {

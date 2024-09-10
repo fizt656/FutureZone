@@ -1,12 +1,21 @@
 # api_manager.py
 import aiohttp
+import json
 from config import OPENROUTER_URL, ANTHROPIC_URL, OPENROUTER_HEADERS, ANTHROPIC_HEADERS, OPENROUTER_MODELS, CLAUDE_MODELS, DEFAULT_CLAUDE_MODEL, ANTHROPIC_MAX_TOKENS
+from characters import characters
 
 class APIManager:
     def __init__(self):
         self.current_llm = "anthropic"
         self.current_claude_model = DEFAULT_CLAUDE_MODEL
         self.current_openrouter_model = list(OPENROUTER_MODELS.keys())[0]
+        self.current_character = "Eli"  # Default character
+
+    def set_character(self, character_name):
+        if character_name in characters:
+            self.current_character = character_name
+            return True
+        return False
 
     async def generate_response(self, message, conversation):
         if self.current_llm == "anthropic":
@@ -18,12 +27,21 @@ class APIManager:
         return response_text
 
     async def generate_anthropic_response(self, message, conversation):
+        system_prompt = characters[self.current_character]["system_prompt"]
+        
+        messages = []
+        for msg in conversation:
+            if msg["role"] != "system":
+                messages.append({"role": msg["role"], "content": msg["content"]})
+        
+        messages.append({"role": "user", "content": message})
+
         data = {
             "model": self.current_claude_model,
-            "messages": conversation + [{"role": "user", "content": message}],
+            "messages": messages,
+            "system": system_prompt,
             "max_tokens": ANTHROPIC_MAX_TOKENS,
-            "temperature": 0.7,
-            "stop_sequences": ["\n\nHuman:", "\n\nAssistant:"]
+            "temperature": 0.7
         }
 
         async with aiohttp.ClientSession() as session:
@@ -32,28 +50,30 @@ class APIManager:
                     response_json = await response.json()
                     if response.status == 200:
                         if 'content' in response_json:
-                            content = response_json['content']
-                            response_text = ""
-                            for item in content:
-                                if item['type'] == 'text':
-                                    response_text += item['text']
-                            return response_text.strip()
+                            return response_json['content'][0]['text']
                         else:
                             print("Error: 'content' key not found in the Anthropic API response.")
+                            print(f"Full response: {json.dumps(response_json, indent=2)}")
                     else:
                         print(f"Error: Anthropic API returned status code {response.status}")
+                        print(f"Response headers: {response.headers}")
+                        print(f"Response body: {await response.text()}")
                 except Exception as e:
                     print(f"Error: {str(e)}")
+                    print(f"Response status: {response.status}")
+                    print(f"Response headers: {response.headers}")
+                    print(f"Response body: {await response.text()}")
                 
                 return "I apologize, but I encountered an error while processing your request."
 
     async def generate_openrouter_response(self, message, conversation):
-        messages = conversation + [{"role": "user", "content": message}]
+        system_prompt = characters[self.current_character]["system_prompt"]
+        full_conversation = [{"role": "system", "content": system_prompt}] + conversation + [{"role": "user", "content": message}]
 
         async with aiohttp.ClientSession() as session:
             async with session.post(OPENROUTER_URL, json={
                 "model": self.current_openrouter_model,
-                "messages": messages
+                "messages": full_conversation
             }, headers=OPENROUTER_HEADERS) as response:
                 response_json = await response.json()
                 if 'choices' in response_json and len(response_json['choices']) > 0:

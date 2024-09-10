@@ -10,7 +10,7 @@ from api_manager import APIManager
 from tts_manager import TTSManager
 from characters import characters
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 intents = discord.Intents.default()
@@ -31,14 +31,17 @@ async def on_ready():
     print(f'Bot is ready. Logged in as {bot.user.name}')
     user = await bot.fetch_user(DISCORD_USER_ID)
     
-    global conversation_manager, tts_manager
+    global conversation_manager, tts_manager, api_manager
     character_name = args.character
     if character_name not in characters:
         print(f"Character '{character_name}' not found. Using default character 'Eli'.")
         character_name = 'Eli'
     
+    api_manager.set_character(character_name)
     conversation_manager = ConversationManager(character_name)
-    tts_manager = TTSManager()
+    voice_id = characters[character_name]["tts_url"].split('/')[-1]
+    voice_settings = characters[character_name]["voice_settings"]
+    tts_manager = TTSManager(voice_id, voice_settings)
 
     await user.send(f"{character_name}, the TPZ Advisor, is ready to help!")
 
@@ -80,7 +83,7 @@ async def on_message(message):
             await message.channel.send("I apologize, but I couldn't generate a response at this time.")
     
     except Exception as e:
-        print(f"Error in on_message: {str(e)}")
+        logger.error(f"Error in on_message: {str(e)}", exc_info=True)
         await message.channel.send("I encountered an unexpected error. Please try again later.")
 
 @bot.command()
@@ -105,10 +108,25 @@ async def tts(ctx):
         await ctx.send("TTS functionality is now disabled.")
 
 @bot.command()
-async def say(ctx, *, text):
+async def say(ctx, *, text=None):
+    logger.debug(f"Say command invoked with text: {text}")
+    logger.debug(f"TTS enabled: {tts_manager.tts_enabled}")
+    
     if tts_manager.tts_enabled:
-        await tts_manager.send_tts(ctx.channel, text)
+        if text is None:
+            last_message = conversation_manager.get_last_message()
+            logger.debug(f"Last message: {last_message}")
+            if last_message:
+                logger.debug("Attempting to send TTS with last message")
+                await tts_manager.send_tts(ctx.channel, last_message)
+            else:
+                logger.debug("No last message found")
+                await ctx.send("There are no messages in the conversation to say.")
+        else:
+            logger.debug("Attempting to send TTS with provided text")
+            await tts_manager.send_tts(ctx.channel, text)
     else:
+        logger.debug("TTS is disabled")
         await ctx.send("TTS is currently disabled. Use !tts to enable it.")
 
 @bot.command()
