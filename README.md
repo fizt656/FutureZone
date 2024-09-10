@@ -1,3 +1,5 @@
+![FutureZone Banner](banner.jpg)
+
 # FutureZone: Prototype TPZ Advisor Discord Bot
 
 **IMPORTANT: This is a functional prototype to demonstrate utility. It is not a finished product... YET.**
