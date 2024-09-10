@@ -38,8 +38,8 @@ There are two ways to install and configure FutureZone: one-click installation a
 The one-click installation method provides a quick and easy way to set up FutureZone. However, it may not give you as much insight into the setup process as the manual method (in case you want to build later, especially in different environments).
 
 1. Download the appropriate installer for your operating system:
-   - For Windows: `one-click_installers/install.bat`
-   - For Mac/Linux: `one-click_installers/install.sh`
+   - For Windows: `install.bat`
+   - For Mac/Linux: `install.sh`
 
 2. Run the installer:
    - On Windows: Double-click the `install.bat` file
