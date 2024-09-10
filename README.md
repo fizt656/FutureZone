@@ -1,4 +1,4 @@
-![FutureZone Banner](banner.jpg)
+![FutureZone Banner](banner.png)
 
 # FutureZone: Prototype TPZ Advisor Discord Bot
 
