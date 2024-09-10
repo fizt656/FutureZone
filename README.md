@@ -6,7 +6,6 @@
 
 This project prototypes a Discord bot that supports TPZ (The Possible Zone) Advisors, helping students navigate their entrepreneurial journey. The bot provides engaging, friction-free reflection opportunities and prompts to students, while also generating insight packages for TPZ educators and other stakeholders.
 
-
 ## Prototype Status
 
 This bot is currently in a prototype stage. It serves as a demonstration of the concept and functionality, but is not yet optimized for production use. Features may be incomplete or subject to change as the project evolves.
@@ -30,7 +29,31 @@ This bot is currently in a prototype stage. It serves as a demonstration of the 
 - `characters.py`: Defines character information, system prompts, and voice settings
 - `config.py`: Configuration file (not included in repository for security reasons)
 
-## Setup
+## Installation
+
+There are two ways to install and configure FutureZone: one-click installation and manual installation.
+
+### One-Click Installation
+
+The one-click installation method provides a quick and easy way to set up FutureZone. However, it may not give you as much insight into the setup process as the manual method (in case you want to build later, especially in different environments).
+
+1. Download the appropriate installer for your operating system:
+   - For Windows: `one-click_installers/install.bat`
+   - For Mac/Linux: `one-click_installers/install.sh`
+
+2. Run the installer:
+   - On Windows: Double-click the `install.bat` file
+   - On Mac/Linux: Open a terminal, navigate to the directory containing `install.sh`, and run:
+     ```
+     chmod +x install.sh
+     ./install.sh
+     ```
+
+3. Follow the prompts to enter your API keys and other configuration details.
+
+### Manual Installation
+
+With manual installation, you'll have more control over the setup process and potentially learn more about the project structure. Here are the steps:
 
 1. Clone the repository:
    ```
