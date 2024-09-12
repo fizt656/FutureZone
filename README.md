@@ -8,7 +8,7 @@ This project prototypes a Discord bot that supports teachers, mentors, career ad
 
 ## About the Demo Version
 
-In this demo, the bot is configured as an advisor for the fictional Hogwarts School of Witchcraft and Wizardry. The default character, Elijah "Eli" McCoy, guides students through their magical education journey. As Albus Dumbledore once said, "It is our choices that show what we truly are, far more than our abilities." This advisor bot aims to help students make those important choices.
+In this demo, the bot is configured as an advisor for the fictional Hogwarts School of Witchcraft and Wizardry. The default character, Aldwyn Blackwood, guides students through their magical education journey. As Albus Dumbledore once said, "It is our choices that show what we truly are, far more than our abilities." This advisor bot aims to help students make those important choices.
 
 **Note to Users:** While the demo uses a fictional setting, you can easily customize the bot for your specific educational context. The `characters.py` file contains the system prompt and character settings, which you can modify to suit your needs. Feel free to replace Hogwarts with your own institution and adjust the educational journey to match your curriculum!
 
@@ -63,7 +63,7 @@ The one-click installation method provides a quick and easy way to set up Future
    ```
    python main.py [character_name]
    ```
-   If no character name is provided, the bot will default to "Eli".
+   If no character name is provided, the bot will default to "Aldwyn".
 
 ### Manual Installation
 
@@ -98,7 +98,7 @@ With manual installation, you'll have more control over the setup process and po
    ```
    python main.py [character_name]
    ```
-   If no character name is provided, the bot will default to "Eli".
+   If no character name is provided, the bot will default to "Aldwyn".
 
 ## Usage
 
@@ -107,7 +107,7 @@ The FutureZone bot is designed to engage with students in an informal, friendly 
 ### How It Works
 
 1. When the bot is started, it automatically initiates the conversation by sending a greeting message to the student.
-2. The bot introduces itself as the selected character (default is Elijah McCoy/Eli) and starts with a general check-in, asking how things are going in the student's life before transitioning to their progress.
+2. The bot introduces itself as the selected character (default is Aldwyn Blackwood) and starts with a general check-in, asking how things are going in the student's life before transitioning to their progress.
 3. Students can engage in ongoing conversations with the bot, asking questions or reflecting on their work.
 4. The bot provides guidance and prompts related to different phases of the journey.
 
