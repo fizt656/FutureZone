@@ -8,7 +8,7 @@ OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions'
 OPENROUTER_HEADERS = {
     'Authorization': f'Bearer {OPENROUTER_KEY}',
     'HTTP-Referer': 'YOUR_HTTP_REFERER',
-    'X-Title': 'TPZ-Advisor-Bot',
+    'X-Title': 'Hogwarts-Advisor-Bot',
     'Content-Type': 'application/json'
 }
 

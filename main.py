@@ -22,7 +22,7 @@ conversation_manager = None
 tts_manager = None
 
 # Parse command-line arguments
-parser = argparse.ArgumentParser(description='Start the TPZ Advisor bot with a specific character.')
+parser = argparse.ArgumentParser(description='Start the FutureZone Advisor bot with a specific character.')
 parser.add_argument('character', nargs='?', default='Eli', help='The name of the character to use (default: Eli)')
 args = parser.parse_args()
 
@@ -46,7 +46,7 @@ async def on_ready():
     character = characters[character_name]
     tts_manager.set_voice_settings(character)
 
-    await user.send(f"{character_name}, the TPZ Advisor, is ready to help!")
+    await user.send(f"{character_name}, the FutureZone Advisor, is ready to help!")
 
 @bot.event
 async def on_message(message):

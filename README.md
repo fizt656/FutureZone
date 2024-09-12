@@ -1,10 +1,16 @@
 ![FutureZone Banner](banner.png)
 
-# FutureZone: Prototype TPZ Advisor Discord Bot
+# FutureZone: Prototype Advisor Discord Bot
 
 **IMPORTANT: This is a functional prototype to demonstrate utility. It is not a finished product... YET.**
 
-This project prototypes a Discord bot that supports TPZ (The Possible Zone) Advisors, helping students navigate their entrepreneurial journey. The bot provides engaging, friction-free reflection opportunities and prompts to students, while also generating insight packages for TPZ educators and other stakeholders.
+This project prototypes a Discord bot that supports teachers, mentors, career advisors, and life coaches. The bot provides engaging, friction-free reflection opportunities and prompts to students, while also generating insight packages for mentors and other stakeholders.
+
+## About the Demo Version
+
+In this demo, the bot is configured as an advisor for the fictional Hogwarts School of Witchcraft and Wizardry. The default character, Elijah "Eli" McCoy, guides students through their magical education journey. As Albus Dumbledore once said, "It is our choices that show what we truly are, far more than our abilities." This advisor bot aims to help students make those important choices.
+
+**Note to Users:** While the demo uses a fictional setting, you can easily customize the bot for your specific educational context. The `characters.py` file contains the system prompt and character settings, which you can modify to suit your needs. Feel free to replace Hogwarts with your own institution and adjust the educational journey to match your curriculum!
 
 ## Prototype Status
 
@@ -12,12 +18,12 @@ This bot is currently in a prototype stage. It serves as a demonstration of the 
 
 ## Purpose and Features
 
-- Facilitate ongoing reflection and guidance for students throughout their TPZ journey
-- Generate insight packages for TPZ educators, R&E, Student Support, and Communications (prototype stage)
-- Conversation management with TPZ Advisors
+- Facilitate ongoing reflection and guidance for students throughout their journey
+- Generate insight packages for various stakeholders (prototype stage)
+- Conversation management with mentors
 - Text-to-speech functionality using ElevenLabs (now enabled by default)
 - Support for multiple AI models (Claude, OpenRouter)
-- Character selection when launching the bot, with character-specific voice settings
+- Character selection when launching the bot, with character-specific voice settings (allowing user to customize to their needs and environment)
 - Basic command system for interaction within Discord
 
 ## Main Components
@@ -96,18 +102,14 @@ With manual installation, you'll have more control over the setup process and po
 
 ## Usage
 
-The FutureZone bot is designed to engage with students in an informal, friendly manner. It uses emojis and casual language to create a comfortable environment for students to reflect on their entrepreneurial journey at The Possible Zone (TPZ).
+The FutureZone bot is designed to engage with students in an informal, friendly manner. It uses emojis and casual language to create a comfortable environment for students to reflect on their journey.
 
 ### How It Works
 
 1. When the bot is started, it automatically initiates the conversation by sending a greeting message to the student.
-2. The bot introduces itself as the selected character (default is Elijah McCoy/Eli) and starts with a general check-in, asking how things are going in the student's life before transitioning to their progress at TPZ.
-3. Students can engage in ongoing conversations with the bot, asking questions or reflecting on their work at TPZ.
-4. The bot provides guidance and prompts related to the different phases of the TPZ program:
-   - DISCOVER: Introduction to TPZ facilities and initial projects
-   - EXPLORE: Deeper exploration of chosen zones and iteration on methods and tools
-   - CREATE: Development of a business idea based on experiences in DISCOVER and EXPLORE
-5. The bot can also discuss other TPZ opportunities like STEAM Deep Dives, Open Studio, and College and Career Pathways Bootcamps.
+2. The bot introduces itself as the selected character (default is Elijah McCoy/Eli) and starts with a general check-in, asking how things are going in the student's life before transitioning to their progress.
+3. Students can engage in ongoing conversations with the bot, asking questions or reflecting on their work.
+4. The bot provides guidance and prompts related to different phases of the journey.
 
 ### Commands
 
@@ -123,21 +125,21 @@ The TTS feature is enabled by default, providing a more immersive and accessible
 
 ## Insight Packages (NOT live yet, in development)
 
-While interacting with students, the bot will [eventually be able to -- growth mindset, right?] generates insight packages for various stakeholders:
+While interacting with students, the bot will [eventually be able to -- growth mindset, right?] generate insight packages for various stakeholders:
 
-1. TPZ Educators: Receive summaries of student interactions, progress, and potential areas for support.
-2. R&E (Research and Evaluation): Gain data on student engagement, common themes, and program effectiveness.
-3. Student Support: Receive alerts on students who may need additional assistance or resources.
-4. Communications: Gather stories and highlights that can be used for program promotion and reporting (future feature).
+1. Mentors: Receive summaries of student interactions, progress, and potential areas for support.
+2. Researchers: Gain data on student engagement, common themes, and program effectiveness.
+3. Counselors: Receive alerts on students who may need additional assistance or resources.
+4. Communication Officers: Gather stories and highlights that can be used for program promotion and reporting (future feature).
 
-Note: In this prototype stage, the insight package generation is  NOT  implemented... YET.
+Note: In this prototype stage, the insight package generation is NOT implemented... YET.
 
 ## Future Plans
 
 As this project evolves beyond the prototype stage, we aim to implement:
 
-1. Advanced context-based flagging system to alert relevant stakeholders (e.g., student support, educators) based on conversational cues, not just keywords.
-2. Integration with TPZ's existing systems for seamless data flow and insights sharing.
+1. Advanced context-based flagging system to alert relevant stakeholders based on conversational cues, not just keywords.
+2. Integration with existing educational systems for seamless data flow and insights sharing.
 3. Expanded character roster to provide diverse perspectives and expertise.
 4. Enhanced natural language processing for more nuanced understanding of student needs and progress.
 5. Further improvements to multimodal interaction capabilities, building on the current TTS implementation.
@@ -159,3 +161,7 @@ Please ensure your code follows the project's coding style and includes appropri
 ## Disclaimer
 
 This bot is a prototype and is not intended for production use in its current state. It may contain bugs, incomplete features, or security vulnerabilities.
+
+## License
+
+This project is licensed under a dual license. Please see the LICENSE file for details.
